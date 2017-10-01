@@ -11,7 +11,7 @@ public class StarburstLineTest {
 	
 	private final LineRenderer renderer;
 	private final Drawable panel;
-	Vertex3D center;
+	private Vertex3D center;
 
 	public StarburstLineTest(Drawable panel, LineRenderer renderer) {
 		this.panel = panel;
