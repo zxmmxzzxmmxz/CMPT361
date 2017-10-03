@@ -12,7 +12,7 @@ public class AlternatingLineRenderer implements LineRenderer {
     }
 
     private LineRenderer secondRenderer = DDALineRenderer.make();
-    private LineRenderer firstRenderer = BresenhamLineRenderer.make();
+    private LineRenderer firstRenderer = ExpensiveLineRenderer.make();
 
     private int parity = 0;
 

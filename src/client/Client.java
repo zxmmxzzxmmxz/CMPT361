@@ -84,7 +84,7 @@ public class Client implements PageTurner {
     private void createRenderers() {
 
         lineRenderers = new LineRenderer[4];
-        lineRenderers[0] = BresenhamLineRenderer.make();
+        //lineRenderers[0] = BresenhamLineRenderer.make();
         lineRenderers[0] = ExpensiveLineRenderer.make();
         lineRenderers[1] = DDALineRenderer.make();
         lineRenderers[2] = AlternatingLineRenderer.make();
