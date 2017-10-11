@@ -6,16 +6,21 @@ public class Line implements HasSlope, HasIntercept {
     private double _intercept;
 
     public Line(Point3DH p1, Point3DH p2) {
-        double deltaX = p2.getIntX() - p1.getIntX();
-        double deltaY = p2.getIntY() - p1.getIntY();
+        double deltaX = p2.getX() - p1.getX();
+        double deltaY = p2.getY() - p1.getY();
 
         _slope = deltaY / deltaX;
-        _intercept = p2.getIntY() - _slope * p2.getIntX();
+        _intercept = p2.getY() - _slope * p2.getX();
     }
 
     public Line(double slope, double intercept) {
         _slope = slope;
         _intercept = intercept;
+    }
+
+    public Line(Line anotherLine) {
+        _slope = anotherLine.getSlope();
+        _intercept = anotherLine.getIntercept();
     }
 
     public double getY(double x) {
@@ -26,8 +31,30 @@ public class Line implements HasSlope, HasIntercept {
         return (y - _intercept) / _slope;
     }
 
-    public void transform(double plusY) {
+    public void transformWithY(double plusY) {
         _intercept += plusY;
+    }
+
+    public void transformWithX(double plusX) {
+        //y = kx + b
+        //y = k(x+plusX) +b
+        //y = kx + k * plusX + b
+        //so new intercept is k*plusX + b
+        _intercept += _slope * plusX;
+    }
+
+    public Line transformWithVector(double x, double y) {
+        transformWithX(x);
+        transformWithY(y);
+        return this;
+    }
+
+    public boolean aboveOrOnLine(double x, double y) {
+        return y >= _slope * x + _intercept;
+    }
+
+    public boolean underOrOnLine(double x, double y) {
+        return y <= _slope * x + _intercept;
     }
 
     @Override
