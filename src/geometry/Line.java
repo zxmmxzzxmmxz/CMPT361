@@ -23,6 +23,11 @@ public class Line implements HasSlope, HasIntercept {
         _intercept = anotherLine.getIntercept();
     }
 
+    public Line(Point3DH p, double k) {
+        _slope = k;
+        _intercept = p.getY() - _slope * p.getX();
+    }
+
     public double getY(double x) {
         return _slope * x + _intercept;
     }
