@@ -46,12 +46,20 @@ public class AntialiasingLineRenderer implements LineRenderer {
     private void doRender(Drawable panel, Line line, Line lowerLine, Line upperLine, int y, int x) {
         if (withinRenderArea(x, y, upperLine, lowerLine)) {
             double distance = GraphicMath.distanceFromLine(line, new Point3DH(x, y, 0));
-            if (distance < 2 * PIXEL_RADIUS) {
+            if (distance < LINE_WIDTH + PIXEL_RADIUS) {
                 //then render the point
                 //otherwise don't
-                panel.setPixel(x, y, 0, Color.WHITE.asARGB());
+                panel.setPixel(x, y, 0, getColor(distance - LINE_WIDTH, x, y, panel));
             }
         }
+    }
+
+    private int getColor(double distance, int x, int y, Drawable panel) {
+        double angle = Math.acos(distance / PIXEL_RADIUS);
+        double fraction = 1 -
+                ((1 - angle / Math.PI) * Math.PI * Math.pow(PIXEL_RADIUS, 2) + distance * Math.sqrt(PIXEL_RADIUS * PIXEL_RADIUS - distance * distance))
+                        / (Math.PI * PIXEL_RADIUS * PIXEL_RADIUS);
+        return Color.fromARGB(panel.getPixel(x, y)).add(Color.WHITE.scale(fraction)).asARGB();
     }
 
     private Pair<Line, Line> getLowerAndUpperLine(Point3DH p1, Point3DH p2, double k) {
@@ -66,6 +74,5 @@ public class AntialiasingLineRenderer implements LineRenderer {
 
     private boolean withinRenderArea(double x, double y, Line upperLine, Line lowerLine) {
         return upperLine.underOrOnLine(x, y) && lowerLine.aboveOrOnLine(x, y);
-        //return true;
     }
 }
